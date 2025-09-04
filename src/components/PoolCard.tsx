@@ -11,6 +11,7 @@ import { Badge } from "@/components/ui/badge";
 import { Shield, TrendingUp, TrendingDown, Minus, DollarSign, Calendar } from "lucide-react";
 import { formatProjectName, formatTvl } from "@/lib/utils";
 import { ChainIcon } from "@/components/icons/ChainIcon";
+import { ProjectAvatar } from "@/components/ProjectAvatar";
 
 export function PoolCard({ pool }: { pool: Pool }) {
   const predictedClass = pool.predictions?.predictedClass ?? null;
@@ -67,6 +68,11 @@ export function PoolCard({ pool }: { pool: Pool }) {
             </span>
           </div>
           <div className="text-sm text-muted-foreground space-y-2">
+            <div className="flex items-center gap-2">
+              <ProjectAvatar name={formatProjectName(pool.project)} />
+              <div className="text-muted-foreground">{formatProjectName(pool.project)}</div>
+              <span className="text-xs">{pool.symbol}</span>
+            </div>
             <div className="flex items-center gap-2">
               <Calendar className="h-4 w-4" />
               <span>

@@ -9,6 +9,7 @@ import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { PoolDetailSkeleton } from "@/components/PoolDetailSkeleton";
 
 interface PoolDetailPageProps {
   params: Promise<{ poolId?: string }>;
@@ -47,27 +48,7 @@ export default function PoolDetailPage({ params }: PoolDetailPageProps) {
   }, [poolId, getPoolChartData]);
 
   if (isLoadingChart) {
-    return (
-      <main className="container mx-auto p-4 md:p-8 flex flex-col gap-8">
-        <header>
-          <Link
-            href="/"
-            className={cn(
-              buttonVariants({ variant: "ghost" }),
-              "flex items-center gap-2 text-muted-foreground"
-            )}
-          >
-            <ArrowLeft className="h-4 w-4" />
-            Back to Dashboard
-          </Link>
-        </header>
-        <div className="w-full text-center">
-          <p className="text-muted-foreground font-medium">
-            Loading pool data...
-          </p>
-        </div>
-      </main>
-    );
+    return <PoolDetailSkeleton />;
   }
 
   if (!poolId) {

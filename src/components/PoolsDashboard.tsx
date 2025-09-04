@@ -10,6 +10,7 @@ import { PoolCard } from "./PoolCard";
 import { Card, CardContent } from "@/components/ui/card";
 import { useWallet } from "@/context/WalletContext";
 import { useData } from "@/context/DataContext";
+import { DashboardSkeleton } from "./DashboardSkeleton";
 
 type Category = (typeof poolCategories)[number];
 
@@ -37,13 +38,7 @@ export function PoolsDashboard() {
 
   // Show loading state
   if (isLoading) {
-    return (
-      <div className="flex flex-col gap-6">
-        <div className="flex justify-center items-center h-32">
-          <div className="text-muted-foreground">Loading pools...</div>
-        </div>
-      </div>
-    );
+    return <DashboardSkeleton />;
   }
 
   // Show error state
