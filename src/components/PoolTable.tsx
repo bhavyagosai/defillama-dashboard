@@ -12,9 +12,11 @@ import { ArrowUpRight, TrendingUp, TrendingDown, Minus } from "lucide-react";
 import { formatProjectName, formatTvl } from "@/lib/utils";
 import { ChainIcon } from "@/components/icons/ChainIcon";
 import { ProjectAvatar } from "@/components/ProjectAvatar";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export function PoolTable({ pools }: { pools: Pool[] }) {
+  const router = useRouter();
+
   function getPredictionVisuals(pool: Pool) {
     const predictedClass = pool.predictions?.predictedClass ?? null;
     const predictedProbability = pool.predictions?.predictedProbability ?? null;
@@ -72,66 +74,65 @@ export function PoolTable({ pools }: { pools: Pool[] }) {
             <TableRow
               key={pool.pool}
               className="cursor-pointer group hover:bg-muted/50"
+              onClick={() => router.push(`/pool/${pool.pool}`)}
             >
-              <Link href={`/pool/${pool.pool}`} className="contents">
-                <TableCell className="sticky left-0 bg-background z-10">
-                  <div className="flex gap-3">
-                    <ProjectAvatar name={formatProjectName(pool.project)} />
-                    <div>
-                      <div className="flex items-center gap-3">
-                        <div className="font-medium">
-                          {formatProjectName(pool.project)}
-                        </div>
-                        <Badge variant="outline">{pool.category}</Badge>
+              <TableCell className="sticky left-0 bg-background z-10">
+                <div className="flex gap-3">
+                  <ProjectAvatar name={formatProjectName(pool.project)} />
+                  <div>
+                    <div className="flex items-center gap-3">
+                      <div className="font-medium">
+                        {formatProjectName(pool.project)}
                       </div>
-                      <div className="text-sm text-muted-foreground flex items-center mt-1 gap-2">
-                        <span>{pool.symbol}</span>
-                        <span>•</span>
-                        <div className="flex items-center gap-1">
-                          <ChainIcon chain={pool.chain} className="h-3 w-3" />
-                          <span>{pool.chain}</span>
-                        </div>
+                      <Badge variant="outline">{pool.category}</Badge>
+                    </div>
+                    <div className="text-sm text-muted-foreground flex items-center mt-1 gap-2">
+                      <span>{pool.symbol}</span>
+                      <span>•</span>
+                      <div className="flex items-center gap-1">
+                        <ChainIcon chain={pool.chain} className="h-3 w-3" />
+                        <span>{pool.chain}</span>
                       </div>
                     </div>
                   </div>
-                </TableCell>
-                <TableCell className="text-center">
-                  {(() => {
-                    const v = getPredictionVisuals(pool);
-                    const Icon = v.Icon;
-                    return (
-                      <div className="inline-flex items-center gap-1">
-                        <Icon className={`h-4 w-4 ${v.colorClass}`} />
-                        <span className={`text-xs font-medium ${v.colorClass}`}>
-                          {v.label}
+                </div>
+              </TableCell>
+              <TableCell className="text-center">
+                {(() => {
+                  const v = getPredictionVisuals(pool);
+                  const Icon = v.Icon;
+                  return (
+                    <div className="inline-flex items-center gap-1">
+                      <Icon className={`h-4 w-4 ${v.colorClass}`} />
+                      <span className={`text-xs font-medium ${v.colorClass}`}>
+                        {v.label}
+                      </span>
+                      {typeof v.probability === "number" && (
+                        <span className="text-[10px] text-muted-foreground">
+                          ({v.probability.toFixed(0)}%)
                         </span>
-                        {typeof v.probability === "number" && (
-                          <span className="text-[10px] text-muted-foreground">
-                            ({v.probability.toFixed(0)}%)
-                          </span>
-                        )}
-                      </div>
-                    );
-                  })()}
-                </TableCell>
-                <TableCell className="text-right font-semibold text-primary">
-                  {pool.apy != null ? `${pool.apy.toFixed(2)}%` : "N/A"}
-                </TableCell>
-                <TableCell className="text-right">
-                  {pool.apyMean30d != null
-                    ? `${pool.apyMean30d.toFixed(2)}%`
-                    : "N/A"}
-                </TableCell>
-                <TableCell className="text-right">
-                  {pool.sigma != null ? pool.sigma.toFixed(4) : "N/A"}
-                </TableCell>
-                <TableCell className="text-right font-medium">
-                  {formatTvl(pool.tvlUsd)}
-                </TableCell>
-                <TableCell>
-                  <ArrowUpRight className="h-4 w-4 text-muted-foreground group-hover:scale-125 transition-all" />
-                </TableCell>
-              </Link>
+                      )}
+                    </div>
+                  );
+                })()}
+              </TableCell>
+              <TableCell className="text-right font-semibold text-primary">
+                {pool.apy != null ? `${pool.apy.toFixed(2)}%` : "N/A"}
+              </TableCell>
+              <TableCell className="text-right">
+                {pool.apyMean30d != null
+                  ? `${pool.apyMean30d.toFixed(2)}%`
+                  : "N/A"}
+              </TableCell>
+              <TableCell className="text-right">
+                {pool.sigma != null ? pool.sigma.toFixed(4) : "N/A"}
+              </TableCell>
+              <TableCell className="text-right font-medium">
+                {formatTvl(pool.tvlUsd)}
+              </TableCell>
+              <TableCell>
+                <ArrowUpRight className="h-4 w-4 text-muted-foreground group-hover:scale-125 transition-all" />
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>
