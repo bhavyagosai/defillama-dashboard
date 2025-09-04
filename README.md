@@ -26,6 +26,7 @@ This project uses [`next/font`](https://nextjs.org/docs/app/building-your-applic
   - Custom themed connect button.
   - Custom themed account + chain buttons.
   - responsive with icon view and text view.
+- Multi search filtering options
 - Yield Aggregator category locked until wallet connects; tooltip, icon, disabled tab.
   - This means even trying to land on /pool/{poolID} page directly for a locked category would not work.
 - Dynamic filtering of Yield Aggregator pools in “All” until unlocked.
