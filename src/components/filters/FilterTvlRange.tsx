@@ -42,6 +42,7 @@ export function FilterTvlRange({
     }
   }, [open]);
 
+  // handle non numeric values. do nothing
   function apply() {
     const parsedMin = localMin ? Number(localMin) : null;
     const parsedMax = localMax ? Number(localMax) : null;

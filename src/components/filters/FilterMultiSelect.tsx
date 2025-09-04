@@ -27,7 +27,10 @@ export function FilterMultiSelect({
   const [query, setQuery] = useState("");
   const containerRef = useRef<HTMLDivElement>(null);
 
+  // make sure these are strings
   const normalized = useMemo(() => options.map((o) => String(o)), [options]);
+
+  // filtered options acc to query and normalized
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
     if (!q) return normalized;
@@ -53,8 +56,12 @@ export function FilterMultiSelect({
     }
   }, [open]);
 
-  const isAllSelected = selected.size === 0; // empty => treat as all
+  const isAllSelected = selected.size === 0; // empty is treated as all
 
+  // take the selected set and check if value already exists
+  // if it already exists then remove, if it doesnt then add
+  // trigger onChange which triggers the setState function in parent of that specific filter list
+  // as this value changes, so does filteredPools
   function toggleValue(value: string) {
     const next = new Set(selected);
     if (next.has(value)) next.delete(value);
@@ -66,6 +73,8 @@ export function FilterMultiSelect({
     onChange(new Set());
   }
 
+  // display on filter label selected values
+  // display max 2 values and then a text saying +n more values
   const summary = isAllSelected
     ? "All"
     : Array.from(selected).slice(0, 2).join(", ") +

@@ -40,6 +40,7 @@ export function FiltersModal({
   if (!isOpen) return null;
 
   return (
+    // modal type component only for mobile view which is simply listing the filters inside the modal.
     <div className="md:hidden fixed inset-0 z-50 bg-black/50 flex items-end md:items-center justify-center">
       <Card className="w-full py-0 mx-4 mb-4 md:mb-0 h-[90vh] overflow-hidden">
         <div className="flex items-center justify-between p-4 border-b">

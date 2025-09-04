@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { poolCategories } from "@/lib/types";
 import { Button } from "@/components/ui/button";
 import { List, LayoutGrid, Lock, SlidersHorizontal } from "lucide-react";
 import { PoolTable } from "./PoolTable";
@@ -13,8 +12,6 @@ import { DashboardSkeleton } from "./DashboardSkeleton";
 import { FilterMultiSelect } from "./filters/FilterMultiSelect";
 import { FilterTvlRange } from "./filters/FilterTvlRange";
 import { FiltersModal } from "./filters/FiltersModal";
-
-type Category = (typeof poolCategories)[number];
 
 export function PoolsDashboard() {
   // Multi-filter state (empty set => All)
@@ -35,7 +32,7 @@ export function PoolsDashboard() {
     ? allPools
     : allPools.filter((pool) => pool.category !== "Yield Aggregator");
 
-  // Build option lists
+  // Build option lists - we get available pools only acc to user perms (wallet connection)
   const allProjects = Array.from(
     new Set(availablePools.map((p) => p.project))
   ).sort();
@@ -44,6 +41,9 @@ export function PoolsDashboard() {
   ).sort();
 
   // Apply filters
+  // the main logic of filters is here where individual checks for each filter are happening
+  // usestate values are updated from the filter dropdown and as soon as they update
+  // filteredPools is updated accordingly with these following checks per filter
   const filteredPools = availablePools.filter((pool) => {
     // category
     if (categories.size > 0 && !categories.has(pool.category)) return false;
