@@ -52,7 +52,7 @@ export function FiltersModal({
             variant="ghost"
             size="icon"
             onClick={onClose}
-            className="h-8 w-8"
+            className="h-8 w-8 cursor-pointer"
           >
             <X className="h-4 w-4" />
           </Button>

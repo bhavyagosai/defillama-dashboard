@@ -121,7 +121,7 @@ export function PoolsDashboard() {
           <Button
             variant="outline"
             onClick={() => setShowFiltersModal(true)}
-            className="w-full justify-center gap-2"
+            className="w-full justify-center gap-2 cursor-pointer"
           >
             <SlidersHorizontal className="h-4 w-4" />
             Filters

@@ -70,7 +70,7 @@ export function FilterTvlRange({
       <Button
         type="button"
         variant="outline"
-        className="w-full justify-between"
+        className="w-full justify-between cursor-pointer"
         onClick={() => setOpen((v) => !v)}
       >
         <span className="truncate text-left">{summary}</span>

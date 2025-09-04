@@ -79,14 +79,14 @@ export function FilterMultiSelect({
       <Button
         type="button"
         variant="outline"
-        className="w-full justify-between"
+        className="w-full justify-between cursor-pointer"
         onClick={() => setOpen((v) => !v)}
       >
         <span className="truncate text-left">{summary || placeholder}</span>
         <ChevronsUpDown className="h-4 w-4 opacity-60" />
       </Button>
       {open && (
-        <Card className="md:absolute z-50 mt-2 w-full md:w-[min(22rem,90vw)] p-2 shadow-lg right-0">
+        <Card className="md:absolute z-50 mt-2 w-full md:w-[min(22rem,90vw)] p-2 shadow-lg left-0 lg:right-0">
           <div className="flex items-center gap-2 p-2 border rounded-md">
             <Search className="h-4 w-4 text-muted-foreground" />
             <input
