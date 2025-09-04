@@ -8,10 +8,18 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Shield, TrendingUp, TrendingDown, Minus, DollarSign, Calendar } from "lucide-react";
+import {
+  Shield,
+  TrendingUp,
+  TrendingDown,
+  Minus,
+  DollarSign,
+  Calendar,
+} from "lucide-react";
 import { formatProjectName, formatTvl } from "@/lib/utils";
 import { ChainIcon } from "@/components/icons/ChainIcon";
 import { ProjectAvatar } from "@/components/ProjectAvatar";
+import Link from "next/link";
 
 export function PoolCard({ pool }: { pool: Pool }) {
   const predictedClass = pool.predictions?.predictedClass ?? null;
@@ -29,18 +37,33 @@ export function PoolCard({ pool }: { pool: Pool }) {
 
     const normalized = predictedClass.toLowerCase();
     if (normalized === "up") {
-      return { label: "Up", probability: predictedProbability, Icon: TrendingUp, colorClass: "text-[var(--primary)]" };
+      return {
+        label: "Up",
+        probability: predictedProbability,
+        Icon: TrendingUp,
+        colorClass: "text-[var(--primary)]",
+      };
     }
     if (normalized === "down") {
-      return { label: "Down", probability: predictedProbability, Icon: TrendingDown, colorClass: "text-[var(--destructive)]" };
+      return {
+        label: "Down",
+        probability: predictedProbability,
+        Icon: TrendingDown,
+        colorClass: "text-[var(--destructive)]",
+      };
     }
-    return { label: predictedClass, probability: predictedProbability, Icon: TrendingUp, colorClass: "text-[var(--primary)]" };
+    return {
+      label: predictedClass,
+      probability: predictedProbability,
+      Icon: TrendingUp,
+      colorClass: "text-[var(--primary)]",
+    };
   }
 
   const visuals = getPredictionVisuals();
 
   return (
-    <a
+    <Link
       href={`/pool/${pool.pool}`}
       className="hover:scale-105 hover:shadow-lg rounded-xl transition-all duration-200 ease-in-out block"
     >
@@ -70,7 +93,9 @@ export function PoolCard({ pool }: { pool: Pool }) {
           <div className="text-sm text-muted-foreground space-y-2">
             <div className="flex items-center gap-2">
               <ProjectAvatar name={formatProjectName(pool.project)} />
-              <div className="text-muted-foreground">{formatProjectName(pool.project)}</div>
+              <div className="text-muted-foreground">
+                {formatProjectName(pool.project)}
+              </div>
               <span className="text-xs">{pool.symbol}</span>
             </div>
             <div className="flex items-center gap-2">
@@ -117,6 +142,6 @@ export function PoolCard({ pool }: { pool: Pool }) {
           </div>
         </CardFooter>
       </Card>
-    </a>
+    </Link>
   );
 }
