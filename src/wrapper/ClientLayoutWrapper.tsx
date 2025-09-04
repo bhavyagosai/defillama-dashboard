@@ -6,6 +6,9 @@ import { Web3Provider } from "@/providers/Web3Provider";
 import { WalletProvider } from "@/context/WalletContext";
 import { DataProvider } from "@/context/DataContext";
 import { Header } from "@/components/Header";
+import { Sidebar } from "@/components/Sidebar";
+import { UIProvider } from "@/context/UIContext";
+import { ThemeProviderLocal } from "@/context/ThemeContext";
 
 export function ClientLayoutWrapper({
   children,
@@ -35,8 +38,15 @@ export function ClientLayoutWrapper({
     <Web3Provider>
       <WalletProvider>
         <DataProvider>
-          <Header />
-          {children}
+          <ThemeProviderLocal>
+            <UIProvider>
+              <Sidebar />
+              <div className="lg:pl-60">
+                <Header />
+                {children}
+              </div>
+            </UIProvider>
+          </ThemeProviderLocal>
         </DataProvider>
       </WalletProvider>
     </Web3Provider>
