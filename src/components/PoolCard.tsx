@@ -70,9 +70,12 @@ export function PoolCard({ pool }: { pool: Pool }) {
       <Card className="h-full flex flex-col border-border/60 pb-0">
         <CardHeader>
           <div className="flex justify-between items-center gap-2">
-            <div>
-              <CardTitle>{formatProjectName(pool.project)}</CardTitle>
-              <CardDescription>{pool.symbol}</CardDescription>
+            <div className="flex gap-2">
+              <ProjectAvatar name={formatProjectName(pool.project)} />
+              <div>
+                <CardTitle>{formatProjectName(pool.project)}</CardTitle>
+                <CardDescription>{pool.symbol}</CardDescription>
+              </div>
             </div>
             <div className="flex flex-col items-end gap-1.5">
               <Badge variant="secondary">{pool.category}</Badge>
@@ -91,13 +94,6 @@ export function PoolCard({ pool }: { pool: Pool }) {
             </span>
           </div>
           <div className="text-sm text-muted-foreground space-y-2">
-            <div className="flex items-center gap-2">
-              <ProjectAvatar name={formatProjectName(pool.project)} />
-              <div className="text-muted-foreground">
-                {formatProjectName(pool.project)}
-              </div>
-              <span className="text-xs">{pool.symbol}</span>
-            </div>
             <div className="flex items-center gap-2">
               <Calendar className="h-4 w-4" />
               <span>
