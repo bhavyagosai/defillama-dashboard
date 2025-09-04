@@ -3,20 +3,30 @@
 import { useState } from "react";
 import { poolCategories } from "@/lib/types";
 import { Button } from "@/components/ui/button";
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { List, LayoutGrid, Lock } from "lucide-react";
+import { List, LayoutGrid, Lock, SlidersHorizontal } from "lucide-react";
 import { PoolTable } from "./PoolTable";
 import { PoolCard } from "./PoolCard";
 import { Card, CardContent } from "@/components/ui/card";
 import { useWallet } from "@/context/WalletContext";
 import { useData } from "@/context/DataContext";
 import { DashboardSkeleton } from "./DashboardSkeleton";
+import { FilterMultiSelect } from "./filters/FilterMultiSelect";
+import { FilterTvlRange } from "./filters/FilterTvlRange";
+import { FiltersModal } from "./filters/FiltersModal";
 
 type Category = (typeof poolCategories)[number];
 
 export function PoolsDashboard() {
-  const [selectedCategory, setSelectedCategory] = useState<Category>("All");
+  // Multi-filter state (empty set => All)
+  const [categories, setCategories] = useState<Set<string>>(new Set());
+  const [projects, setProjects] = useState<Set<string>>(new Set());
+  const [chains, setChains] = useState<Set<string>>(new Set());
+  const [tvlRange, setTvlRange] = useState<{
+    min: number | null;
+    max: number | null;
+  }>({ min: null, max: null });
   const [viewMode, setViewMode] = useState<"table" | "card">("card");
+  const [showFiltersModal, setShowFiltersModal] = useState(false);
   const { isYieldAggregatorUnlocked } = useWallet();
   const { pools: allPools, isLoading, error } = useData();
 
@@ -25,16 +35,32 @@ export function PoolsDashboard() {
     ? allPools
     : allPools.filter((pool) => pool.category !== "Yield Aggregator");
 
-  // Filter pools based on the selected category
-  const filteredPools =
-    selectedCategory === "All"
-      ? availablePools
-      : availablePools.filter((pool) => pool.category === selectedCategory);
+  // Build option lists
+  const allProjects = Array.from(
+    new Set(availablePools.map((p) => p.project))
+  ).sort();
+  const allChains = Array.from(
+    new Set(availablePools.map((p) => p.chain))
+  ).sort();
+
+  // Apply filters
+  const filteredPools = availablePools.filter((pool) => {
+    // category
+    if (categories.size > 0 && !categories.has(pool.category)) return false;
+    // project
+    if (projects.size > 0 && !projects.has(pool.project)) return false;
+    // chain
+    if (chains.size > 0 && !chains.has(pool.chain)) return false;
+    // tvl range
+    if (tvlRange.min != null && pool.tvlUsd < tvlRange.min) return false;
+    if (tvlRange.max != null && pool.tvlUsd > tvlRange.max) return false;
+    return true;
+  });
 
   const isEmpty = !allPools || allPools.length === 0;
   const isFilteredEmpty = filteredPools.length === 0;
   const isYieldAggregatorLocked =
-    selectedCategory === "Yield Aggregator" && !isYieldAggregatorUnlocked;
+    categories.has("Yield Aggregator") && !isYieldAggregatorUnlocked;
 
   // Show loading state
   if (isLoading) {
@@ -56,44 +82,57 @@ export function PoolsDashboard() {
 
   return (
     <div className="flex flex-col gap-6">
-      <header className="flex flex-col lg:flex-row justify-between items-start sm:items-center gap-4">
-        {/* Category Filter Tabs */}
-        <Tabs
-          defaultValue="All"
-          onValueChange={(value) => setSelectedCategory(value as Category)}
-          className="w-full"
-        >
-          <TabsList className="grid w-full grid-cols-1 lg:grid-cols-4 h-full gap-2">
-            {poolCategories.map((category) => {
-              const isLocked =
-                category === "Yield Aggregator" && !isYieldAggregatorUnlocked;
-              return (
-                <TabsTrigger
-                  key={category}
-                  value={category}
-                  className={`cursor-pointer flex items-center gap-2 relative group ${
-                    isLocked ? "opacity-60" : ""
-                  }`}
-                >
-                  {isLocked && <Lock className="h-4 w-4" />}
-                  {category}
-                  {isLocked && (
-                    <div className="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-gray-900 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-50">
-                      Connect wallet to unlock
-                      <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-gray-900"></div>
-                    </div>
-                  )}
-                </TabsTrigger>
-              );
-            })}
-          </TabsList>
-        </Tabs>
+      <header className="flex flex-col gap-4">
+        {/* Desktop Filters Bar - Hidden on mobile */}
+        <div className="hidden md:grid grid-cols-4 gap-3">
+          <FilterMultiSelect
+            label="Category"
+            options={["Lending", "Liquid Staking", "Yield Aggregator"]}
+            selected={categories}
+            onChange={setCategories}
+            disabledOptions={
+              !isYieldAggregatorUnlocked
+                ? new Set(["Yield Aggregator"])
+                : undefined
+            }
+          />
+          <FilterMultiSelect
+            label="Project"
+            options={allProjects}
+            selected={projects}
+            onChange={setProjects}
+          />
+          <FilterMultiSelect
+            label="Chain"
+            options={allChains}
+            selected={chains}
+            onChange={setChains}
+          />
+          <FilterTvlRange
+            label="TVL (USD)"
+            min={tvlRange.min}
+            max={tvlRange.max}
+            onChange={setTvlRange}
+          />
+        </div>
+
+        {/* Mobile Filters Button - Only visible on mobile */}
+        <div className="md:hidden">
+          <Button
+            variant="outline"
+            onClick={() => setShowFiltersModal(true)}
+            className="w-full justify-center gap-2"
+          >
+            <SlidersHorizontal className="h-4 w-4" />
+            Filters
+          </Button>
+        </div>
 
         {/* View Mode Toggle */}
-        <div className="flex items-center w-full lg:w-fit lg:gap-2">
+        <div className="flex items-center w-[calc(100%-8px)] md:w-fit gap-2">
           <Button
             variant={viewMode === "table" ? "secondary" : "ghost"}
-            className="cursor-pointer w-1/2 lg:w-10"
+            className="cursor-pointer w-1/2 md:w-10"
             size="icon"
             onClick={() => setViewMode("table")}
             aria-label="Table View"
@@ -102,7 +141,7 @@ export function PoolsDashboard() {
           </Button>
           <Button
             variant={viewMode === "card" ? "secondary" : "ghost"}
-            className="cursor-pointer w-1/2 lg:w-10"
+            className="cursor-pointer w-1/2 md:w-10"
             size="icon"
             onClick={() => setViewMode("card")}
             aria-label="Card View"
@@ -113,7 +152,7 @@ export function PoolsDashboard() {
       </header>
 
       <main>
-        {/* Handle locked Yield Aggregator category */}
+        {/* Handle locked Yield Aggregator selection */}
         {isYieldAggregatorLocked ? (
           <Card className="border-dashed">
             <CardContent className="p-12 text-center">
@@ -148,8 +187,7 @@ export function PoolsDashboard() {
         ) : isFilteredEmpty ? (
           <Card>
             <CardContent className="p-6 text-center text-destructive">
-              No pools found in{" "}
-              <span className="font-medium">{selectedCategory}</span> category.
+              No pools match current filters.
             </CardContent>
           </Card>
         ) : viewMode === "table" ? (
@@ -162,6 +200,23 @@ export function PoolsDashboard() {
           </div>
         )}
       </main>
+
+      {/* Mobile Filters Modal */}
+      <FiltersModal
+        isOpen={showFiltersModal}
+        onClose={() => setShowFiltersModal(false)}
+        categories={categories}
+        onCategoriesChange={setCategories}
+        projects={projects}
+        onProjectsChange={setProjects}
+        chains={chains}
+        onChainsChange={setChains}
+        tvlRange={tvlRange}
+        onTvlRangeChange={setTvlRange}
+        allProjects={allProjects}
+        allChains={allChains}
+        isYieldAggregatorUnlocked={isYieldAggregatorUnlocked}
+      />
     </div>
   );
 }
