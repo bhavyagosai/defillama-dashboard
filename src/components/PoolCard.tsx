@@ -33,7 +33,7 @@ export function PoolCard({ pool }: { pool: Pool }) {
     if (normalized === "down") {
       return { label: "Down", probability: predictedProbability, Icon: TrendingDown, colorClass: "text-[var(--destructive)]" };
     }
-    return { label: predictedClass, probability: predictedProbability, Icon: Minus, colorClass: "text-[var(--primary)]" };
+    return { label: predictedClass, probability: predictedProbability, Icon: TrendingUp, colorClass: "text-[var(--primary)]" };
   }
 
   const visuals = getPredictionVisuals();
