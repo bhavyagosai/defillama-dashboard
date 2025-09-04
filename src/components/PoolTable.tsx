@@ -31,7 +31,7 @@ export function PoolTable({ pools }: { pools: Pool[] }) {
     const normalized = predictedClass.toLowerCase();
     if (normalized === "up") {
       return {
-        label: "Stable/Up",
+        label: "Up",
         probability: predictedProbability,
         Icon: TrendingUp,
         colorClass: "text-[var(--primary)]",

@@ -37,6 +37,7 @@ export function CustomConnectButton() {
             {(() => {
               if (!connected) {
                 return (
+                  // Connect Button
                   <Button
                     onClick={openConnectModal}
                     className="bg-primary hover:bg-primary/90 text-primary-foreground cursor-pointer"
@@ -49,6 +50,7 @@ export function CustomConnectButton() {
                 );
               }
 
+              // Wrong network display button
               if (chain.unsupported) {
                 return (
                   <Button onClick={openChainModal} variant="destructive">
@@ -57,6 +59,7 @@ export function CustomConnectButton() {
                 );
               }
 
+              // Chain Selection Button
               return (
                 <div className="flex items-center gap-2">
                   <Button
@@ -87,6 +90,9 @@ export function CustomConnectButton() {
                     <span className="hidden md:inline">{chain.name}</span>
                   </Button>
 
+                  {/* User Button 
+                  displays name and balance on desktop
+                  and user icon on mobile  */}
                   <Button
                     onClick={openAccountModal}
                     variant="outline"

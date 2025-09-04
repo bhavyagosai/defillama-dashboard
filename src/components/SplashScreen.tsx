@@ -4,21 +4,21 @@ import { useEffect, useState } from "react";
 import { ShieldCheck } from "lucide-react";
 
 interface SplashScreenProps {
-  onFinish: () => void;
+  onFinish: () => void; // callback to tell parent "done showing splash"
 }
 
 export function SplashScreen({ onFinish }: SplashScreenProps) {
-  const [isFadingOut, setIsFadingOut] = useState(false);
+  const [isFadingOut, setIsFadingOut] = useState(false); // false = visible and vice versa
 
   useEffect(() => {
     // fade-out animation timer
     const fadeOutTimer = setTimeout(() => {
-      setIsFadingOut(true);
+      setIsFadingOut(true); // start fade-out after 1.5s
     }, 1500);
 
     const finishTimer = setTimeout(() => {
       onFinish();
-    }, 2000); // 1.5s visibility + 0.5s fade-out duration to match loading
+    }, 2000); // 1.5s visibility + 0.5s fade-out duration to match loading ---> tell parent: splash done after 2s
 
     // Cleanup timers if unmount happens
     return () => {

@@ -30,11 +30,13 @@ export function Sidebar() {
         <div className="p-4 text-sm text-muted-foreground">Categories</div>
         <nav className="px-2 space-y-1">
           <NavItem href="/" icon={Home} label="Dashboard" />
+          {/* Dummy nav items */}
           <NavItem href="#" icon={BarChart2} label="Analytics" />
           <NavItem href="#" icon={Layers} label="Strategies" />
           <NavItem href="#" icon={Wallet} label="Wallet" />
           <NavItem href="#" icon={Settings} label="Settings" />
         </nav>
+        {/* Wallet connection label with pulsating animation */}
         <div
           className={cn(
             "absolute bottom-0 font-bold left-0 right-0 p-3 text-xs flex items-center gap-2",

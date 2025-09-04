@@ -8,6 +8,8 @@ interface UIContextType {
   closeSidebar: () => void;
 }
 
+// this is for sidebar rendering
+
 const UIContext = createContext<UIContextType | undefined>(undefined);
 
 export function UIProvider({ children }: { children: React.ReactNode }) {
@@ -36,6 +38,3 @@ export function useUI() {
   if (!ctx) throw new Error("useUI must be used within UIProvider");
   return ctx;
 }
-
-
-

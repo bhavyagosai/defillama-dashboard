@@ -33,6 +33,6 @@ export function ChainIcon({
         </svg>
       );
     default:
-      return null; // ik would need to handle this but havent for now
+      return null; // i would need to handle this but havent for now
   }
 }

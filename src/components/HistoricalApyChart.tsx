@@ -23,7 +23,10 @@ import { useMemo } from "react";
 const processChartData = (rawData: ChartDataPoint[]) => {
   if (!rawData || rawData.length === 0) return [];
 
+  // using map here to easily check keys when needed
   const monthlyData = new Map<string, { fullDate: Date; apy: number }>();
+
+  // cutoff point to compute from last 12 months only
   const oneYearAgo = new Date();
   oneYearAgo.setFullYear(oneYearAgo.getFullYear() - 1);
 
@@ -36,6 +39,8 @@ const processChartData = (rawData: ChartDataPoint[]) => {
 
     const monthKey = `${pointDate.getFullYear()}-${pointDate.getMonth()}`;
 
+    // only store first of each month
+    // deduplication logic
     if (!monthlyData.has(monthKey)) {
       monthlyData.set(monthKey, {
         fullDate: pointDate, // Store the full date for sorting

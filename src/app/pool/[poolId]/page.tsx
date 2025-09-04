@@ -21,6 +21,7 @@ export default function PoolDetailPage({ params }: PoolDetailPageProps) {
   const [isLoadingChart, setIsLoadingChart] = useState(true);
   const { pools, getPoolChartData } = useData();
 
+  // resolve params as they are received async
   useEffect(() => {
     const resolveParams = async () => {
       const resolvedParams = await params;
@@ -29,6 +30,7 @@ export default function PoolDetailPage({ params }: PoolDetailPageProps) {
     resolveParams();
   }, [params]);
 
+  // fetch chart data
   useEffect(() => {
     if (poolId) {
       const fetchChartData = async () => {
@@ -47,10 +49,12 @@ export default function PoolDetailPage({ params }: PoolDetailPageProps) {
     }
   }, [poolId, getPoolChartData]);
 
+  // loading skeleton
   if (isLoadingChart) {
     return <PoolDetailSkeleton />;
   }
 
+  // fallback view if no param found
   if (!poolId) {
     return (
       <main className="container p-4 md:p-8 flex flex-col gap-8">
@@ -77,6 +81,7 @@ export default function PoolDetailPage({ params }: PoolDetailPageProps) {
 
   const pool = pools.find((p) => p.pool === poolId);
 
+  // fallback view if no pool found from param (pool ID)
   if (!pool) {
     return (
       <main className="container p-4 md:p-8 flex flex-col gap-8">
@@ -102,6 +107,8 @@ export default function PoolDetailPage({ params }: PoolDetailPageProps) {
   }
 
   return (
+    // this is to check if pool id is yield aggregator
+    // if so then prevent display exploit
     <ProtectedPoolDetail poolId={poolId}>
       <main className="container p-4 md:p-8 flex flex-col gap-8">
         <header>

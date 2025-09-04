@@ -10,6 +10,7 @@ import { Button } from "./ui/button";
 export function Header() {
   const { toggleSidebar } = useUI();
   const { theme, toggleTheme } = useThemeLocal();
+
   return (
     <header className="container mx-auto p-4 md:p-6 lg:px-8">
       <div className="flex justify-between items-center">
@@ -30,7 +31,9 @@ export function Header() {
           </Link>
         </div>
         <div className="flex items-center gap-2">
+          {/* Wallet Connect Button */}
           <CustomConnectButton />
+          {/* Theme toggle button */}
           <Button
             variant="outline"
             className="cursor-pointer"

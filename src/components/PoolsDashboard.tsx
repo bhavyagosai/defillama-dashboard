@@ -133,7 +133,7 @@ export function PoolsDashboard() {
                 <div className="mt-4 p-4 bg-muted/50 rounded-lg">
                   <p className="text-sm text-muted-foreground">
                     Yield Aggregator pools require wallet authentication for
-                    security and compliance.
+                    security.
                   </p>
                 </div>
               </div>
