@@ -15,7 +15,7 @@ const config = getDefaultConfig({
       console.error(
         "Missing NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID environment variable"
       );
-      throw new Error("Missing: API key");
+      throw new Error("Missing: Wallet Connect Project ID");
     })(),
   chains: [mainnet, polygon, arbitrum, optimism],
   ssr: true, // Enable server-side rendering support

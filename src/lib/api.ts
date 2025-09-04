@@ -1,7 +1,25 @@
 import { ChartDataPoint, Pool, PoolConfig } from "./types";
 
-// predefined mapping object with provided categorization
-const POOL_CONFIG: PoolConfig = {
+// Environment-driven configuration with safe fallbacks
+const YIELDS_API_BASE =
+  process.env.NEXT_PUBLIC_YIELDS_API_BASE || "https://yields.llama.fi";
+
+function readEnvPoolConfig(): PoolConfig | null {
+  const raw = process.env.NEXT_PUBLIC_POOL_CONFIG;
+  if (!raw) return null;
+  try {
+    const parsed = JSON.parse(raw);
+    return parsed as PoolConfig;
+  } catch (e) {
+    console.warn(
+      "Invalid NEXT_PUBLIC_POOL_CONFIG JSON. Falling back to defaults."
+    );
+    return null;
+  }
+}
+
+// predefined mapping object with provided categorization (fallback)
+const DEFAULT_POOL_CONFIG: PoolConfig = {
   // Lending Pools
   "db678df9-3281-4bc2-a8bb-01160ffd6d48": { category: "Lending" }, // aave-v3
   "c1ca08e4-d618-415e-ad63-fcec58705469": { category: "Lending" }, // compound-v3
@@ -18,6 +36,8 @@ const POOL_CONFIG: PoolConfig = {
   "1977885c-d5ae-4c9e-b4df-863b7e1578e6": { category: "Yield Aggregator" }, // beefy
 };
 
+const POOL_CONFIG: PoolConfig = readEnvPoolConfig() || DEFAULT_POOL_CONFIG;
+
 // ID List
 const POOL_IDS = Object.keys(POOL_CONFIG);
 
@@ -27,7 +47,7 @@ const POOL_IDS = Object.keys(POOL_CONFIG);
  */
 export async function getPools(): Promise<Pool[]> {
   try {
-    const response = await fetch("https://yields.llama.fi/pools");
+    const response = await fetch(`${YIELDS_API_BASE}/pools`);
     if (!response.ok) {
       throw new Error("Failed to fetch pools");
     }
@@ -60,7 +80,7 @@ export async function getPoolChartData(
   poolId: string
 ): Promise<ChartDataPoint[]> {
   try {
-    const response = await fetch(`https://yields.llama.fi/chart/${poolId}`);
+    const response = await fetch(`${YIELDS_API_BASE}/chart/${poolId}`);
     if (!response.ok) {
       throw new Error(`Failed to fetch chart data for pool ${poolId}`);
     }
