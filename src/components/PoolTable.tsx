@@ -76,7 +76,7 @@ export function PoolTable({ pools }: { pools: Pool[] }) {
               className="cursor-pointer group hover:bg-muted/50"
               onClick={() => router.push(`/pool/${pool.pool}`)}
             >
-              <TableCell className="md:sticky left-0 bg-background z-10">
+              <TableCell className="md:sticky left-0 z-10">
                 <div className="flex gap-3">
                   <ProjectAvatar name={formatProjectName(pool.project)} />
                   <div>
