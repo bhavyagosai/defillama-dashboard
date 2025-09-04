@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { List, LayoutGrid, Lock, SlidersHorizontal } from "lucide-react";
 import { PoolTable } from "./PoolTable";
@@ -44,18 +44,20 @@ export function PoolsDashboard() {
   // the main logic of filters is here where individual checks for each filter are happening
   // usestate values are updated from the filter dropdown and as soon as they update
   // filteredPools is updated accordingly with these following checks per filter
-  const filteredPools = availablePools.filter((pool) => {
-    // category
-    if (categories.size > 0 && !categories.has(pool.category)) return false;
-    // project
-    if (projects.size > 0 && !projects.has(pool.project)) return false;
-    // chain
-    if (chains.size > 0 && !chains.has(pool.chain)) return false;
-    // tvl range
-    if (tvlRange.min != null && pool.tvlUsd < tvlRange.min) return false;
-    if (tvlRange.max != null && pool.tvlUsd > tvlRange.max) return false;
-    return true;
-  });
+  const filteredPools = useMemo(() => {
+    return availablePools.filter((pool) => {
+      // category
+      if (categories.size > 0 && !categories.has(pool.category)) return false;
+      // project
+      if (projects.size > 0 && !projects.has(pool.project)) return false;
+      // chain
+      if (chains.size > 0 && !chains.has(pool.chain)) return false;
+      // tvl range
+      if (tvlRange.min != null && pool.tvlUsd < tvlRange.min) return false;
+      if (tvlRange.max != null && pool.tvlUsd > tvlRange.max) return false;
+      return true;
+    });
+  }, [availablePools, categories, projects, chains, tvlRange]);
 
   const isEmpty = !allPools || allPools.length === 0;
   const isFilteredEmpty = filteredPools.length === 0;
