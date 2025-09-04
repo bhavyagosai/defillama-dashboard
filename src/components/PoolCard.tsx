@@ -8,12 +8,35 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Shield, TrendingUp, DollarSign, Calendar } from "lucide-react";
+import { Shield, TrendingUp, TrendingDown, Minus, DollarSign, Calendar } from "lucide-react";
 import { formatProjectName, formatTvl } from "@/lib/utils";
 import { ChainIcon } from "@/components/icons/ChainIcon";
 
 export function PoolCard({ pool }: { pool: Pool }) {
-  const prediction = pool.predictions?.predictedClass || "N/A";
+  const predictedClass = pool.predictions?.predictedClass ?? null;
+  const predictedProbability = pool.predictions?.predictedProbability ?? null;
+
+  function getPredictionVisuals() {
+    if (!predictedClass) {
+      return {
+        label: "N/A",
+        probability: null as number | null,
+        Icon: Minus,
+        colorClass: "text-muted-foreground",
+      };
+    }
+
+    const normalized = predictedClass.toLowerCase();
+    if (normalized === "up") {
+      return { label: "Up", probability: predictedProbability, Icon: TrendingUp, colorClass: "text-[var(--primary)]" };
+    }
+    if (normalized === "down") {
+      return { label: "Down", probability: predictedProbability, Icon: TrendingDown, colorClass: "text-[var(--destructive)]" };
+    }
+    return { label: predictedClass, probability: predictedProbability, Icon: Minus, colorClass: "text-[var(--primary)]" };
+  }
+
+  const visuals = getPredictionVisuals();
 
   return (
     <a
@@ -56,12 +79,17 @@ export function PoolCard({ pool }: { pool: Pool }) {
               </span>
             </div>
             <div className="flex items-center gap-2">
-              <TrendingUp className="h-4 w-4" />
-              <span>
-                Prediction:{" "}
-                <span className="font-semibold text-foreground">
-                  {prediction}
+              <visuals.Icon className={`h-4 w-4 ${visuals.colorClass}`} />
+              <span className="flex items-center gap-1">
+                <span>Prediction:</span>
+                <span className={`font-semibold ${visuals.colorClass}`}>
+                  {visuals.label}
                 </span>
+                {typeof visuals.probability === "number" && (
+                  <span className="text-xs text-muted-foreground">
+                    ({visuals.probability.toFixed(0)}%)
+                  </span>
+                )}
               </span>
             </div>
             <div className="flex items-center gap-2">

@@ -7,12 +7,58 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Shield, TrendingUp, DollarSign, Calendar, Info } from "lucide-react";
+import {
+  Shield,
+  TrendingUp,
+  TrendingDown,
+  Minus,
+  DollarSign,
+  Calendar,
+  Info,
+} from "lucide-react";
 import { formatProjectName, formatTvl } from "@/lib/utils";
 import { ChainIcon } from "@/components/icons/ChainIcon";
 
 export function PoolDetailCard({ pool }: { pool: Pool }) {
-  const prediction = pool.predictions?.predictedClass || "N/A";
+  const predictedClass = pool.predictions?.predictedClass ?? null;
+  const predictedProbability = pool.predictions?.predictedProbability ?? null;
+
+  function getPredictionVisuals() {
+    if (!predictedClass) {
+      return {
+        label: "N/A",
+        probability: null as number | null,
+        Icon: Minus,
+        colorClass: "text-muted-foreground",
+      };
+    }
+
+    const normalized = predictedClass.toLowerCase();
+    if (normalized === "up") {
+      return {
+        label: "Up",
+        probability: predictedProbability,
+        Icon: TrendingUp,
+        colorClass: "text-[var(--primary)]",
+      };
+    }
+    if (normalized === "down") {
+      return {
+        label: "Down",
+        probability: predictedProbability,
+        Icon: TrendingDown,
+        colorClass: "text-[var(--destructive)]",
+      };
+    }
+    return {
+      label: predictedClass,
+      probability: predictedProbability,
+      Icon: Minus,
+      colorClass: "text-[var(--primary)]",
+    };
+  }
+
+  const visuals = getPredictionVisuals();
 
   return (
     <Card className="border-border/60">
@@ -51,7 +97,16 @@ export function PoolDetailCard({ pool }: { pool: Pool }) {
               pool.apyMean30d != null ? `${pool.apyMean30d.toFixed(2)}%` : "N/A"
             }
           />
-          <InfoItem icon={TrendingUp} label="Prediction" value={prediction} />
+          <InfoItem
+            icon={visuals.Icon}
+            label="Prediction"
+            value={`${visuals.label}${
+              typeof visuals.probability === "number"
+                ? ` (${visuals.probability.toFixed(0)}%)`
+                : ""
+            }`}
+            valueClassName={visuals.colorClass}
+          />
           <InfoItem
             icon={Shield}
             label="Risk (σ)"
@@ -73,17 +128,25 @@ function InfoItem({
   icon: Icon,
   label,
   value,
+  valueClassName,
 }: {
   icon: React.ElementType;
   label: string;
   value: string;
+  valueClassName?: string;
 }) {
   return (
     <div className="flex items-start gap-3 p-4 bg-muted/50 rounded-lg">
       <Icon className="h-5 w-5 text-muted-foreground mt-0.5" />
       <div>
         <p className="text-muted-foreground">{label}</p>
-        <p className="font-semibold text-lg text-foreground">{value}</p>
+        <p
+          className={`font-semibold text-lg ${
+            valueClassName ?? "text-foreground"
+          }`}
+        >
+          {value}
+        </p>
       </div>
     </div>
   );
