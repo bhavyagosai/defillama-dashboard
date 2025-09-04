@@ -23,7 +23,7 @@ export function Header() {
           </button>
           <Link
             href={"/"}
-            className="flex items-center gap-3 text-xl font-bold text-foreground"
+            className="flex items-center gap-2 md:gap-3 text-lg md:text-xl font-bold text-foreground"
           >
             <ShieldCheck className="h-7 w-7 text-primary" />
             <h1>DeFi Dashboard</h1>

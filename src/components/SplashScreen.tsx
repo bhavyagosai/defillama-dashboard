@@ -32,7 +32,7 @@ export function SplashScreen({ onFinish }: SplashScreenProps) {
       className={`fixed inset-0 z-50 flex flex-col items-center justify-center bg-background transition-opacity duration-500 ease-in-out
       ${isFadingOut ? "opacity-0" : "opacity-100"}`}
     >
-      <div className="flex items-center gap-3 text-2xl font-bold text-foreground animate-pulse">
+      <div className="flex items-center gap-3 text-2xl md:text-3xl font-bold text-foreground animate-pulse">
         <ShieldCheck className="h-8 w-8 text-primary" />
         <h1>DeFi Dashboard</h1>
       </div>

@@ -2,6 +2,7 @@
 
 import { ConnectButton as RainbowConnectButton } from "@rainbow-me/rainbowkit";
 import { Button } from "@/components/ui/button";
+import { User, Wallet } from "lucide-react";
 
 export function CustomConnectButton() {
   return (
@@ -40,7 +41,10 @@ export function CustomConnectButton() {
                     onClick={openConnectModal}
                     className="bg-primary hover:bg-primary/90 text-primary-foreground cursor-pointer"
                   >
-                    Connect Wallet
+                    <span className="hidden md:block">Connect Wallet</span>
+                    <span className="md:hidden block">
+                      <Wallet />
+                    </span>
                   </Button>
                 );
               }
@@ -58,40 +62,49 @@ export function CustomConnectButton() {
                   <Button
                     onClick={openChainModal}
                     variant="outline"
-                    className="flex items-center gap-2 cursor-pointer"
+                    className="flex items-center gap-2 cursor-pointer p-2 md:px-3 md:py-2"
+                    aria-label="Change network"
                   >
                     {chain.hasIcon && (
                       <div
                         style={{
                           background: chain.iconBackground,
-                          width: 12,
-                          height: 12,
+                          width: 16,
+                          height: 16,
                           borderRadius: 999,
                           overflow: "hidden",
-                          marginRight: 4,
                         }}
                       >
                         {chain.iconUrl && (
                           <img
                             alt={chain.name ?? "Chain icon"}
                             src={chain.iconUrl}
-                            style={{ width: 12, height: 12 }}
+                            style={{ width: 16, height: 16 }}
                           />
                         )}
                       </div>
                     )}
-                    {chain.name}
+                    <span className="hidden md:inline">{chain.name}</span>
                   </Button>
 
                   <Button
                     onClick={openAccountModal}
                     variant="outline"
-                    className="flex items-center gap-2 cursor-pointer"
+                    className="flex items-center gap-2 cursor-pointer p-2 md:px-3 md:py-2"
+                    aria-label="Account"
                   >
-                    {account.displayName}
-                    {account.displayBalance
-                      ? ` (${account.displayBalance})`
-                      : ""}
+                    <span className="md:hidden">
+                      <User width={16} height={16} />
+                    </span>
+                    <span className="hidden md:inline">
+                      {account.displayName}
+                    </span>
+                    {account.displayBalance && (
+                      <span className="hidden md:inline">
+                        {" "}
+                        ({account.displayBalance})
+                      </span>
+                    )}
                   </Button>
                 </div>
               );

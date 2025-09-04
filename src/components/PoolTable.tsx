@@ -58,7 +58,7 @@ export function PoolTable({ pools }: { pools: Pool[] }) {
       <Table className="min-w-[900px]">
         <TableHeader>
           <TableRow>
-            <TableHead className="sticky left-0 bg-background z-10">
+            <TableHead className="md:sticky left-0 bg-background z-10">
               Project
             </TableHead>
             <TableHead className="text-center">Prediction</TableHead>
@@ -76,7 +76,7 @@ export function PoolTable({ pools }: { pools: Pool[] }) {
               className="cursor-pointer group hover:bg-muted/50"
               onClick={() => router.push(`/pool/${pool.pool}`)}
             >
-              <TableCell className="sticky left-0 bg-background z-10">
+              <TableCell className="md:sticky left-0 bg-background z-10">
                 <div className="flex gap-3">
                   <ProjectAvatar name={formatProjectName(pool.project)} />
                   <div>

@@ -56,13 +56,14 @@ export function PoolsDashboard() {
 
   return (
     <div className="flex flex-col gap-6">
-      <header className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+      <header className="flex flex-col lg:flex-row justify-between items-start sm:items-center gap-4">
         {/* Category Filter Tabs */}
         <Tabs
           defaultValue="All"
           onValueChange={(value) => setSelectedCategory(value as Category)}
+          className="w-full"
         >
-          <TabsList className="grid grid-cols-2 sm:grid-cols-4 h-full">
+          <TabsList className="grid w-full grid-cols-1 lg:grid-cols-4 h-full gap-2">
             {poolCategories.map((category) => {
               const isLocked =
                 category === "Yield Aggregator" && !isYieldAggregatorUnlocked;
@@ -89,10 +90,10 @@ export function PoolsDashboard() {
         </Tabs>
 
         {/* View Mode Toggle */}
-        <div className="flex items-center gap-2">
+        <div className="flex items-center w-full lg:w-fit lg:gap-2">
           <Button
             variant={viewMode === "table" ? "secondary" : "ghost"}
-            className="cursor-pointer"
+            className="cursor-pointer w-1/2 lg:w-10"
             size="icon"
             onClick={() => setViewMode("table")}
             aria-label="Table View"
@@ -101,7 +102,7 @@ export function PoolsDashboard() {
           </Button>
           <Button
             variant={viewMode === "card" ? "secondary" : "ghost"}
-            className="cursor-pointer"
+            className="cursor-pointer w-1/2 lg:w-10"
             size="icon"
             onClick={() => setViewMode("card")}
             aria-label="Card View"
