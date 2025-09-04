@@ -38,7 +38,7 @@ export function PoolTable({ pools }: { pools: Pool[] }) {
           {pools.map((pool) => (
             <TableRow
               key={pool.pool}
-              className="cursor-pointer hover:bg-muted/50"
+              className="cursor-pointer group hover:bg-muted/50"
             >
               <Link href={`/pool/${pool.pool}`} className="contents">
                 <TableCell>
@@ -77,7 +77,7 @@ export function PoolTable({ pools }: { pools: Pool[] }) {
                   {formatTvl(pool.tvlUsd)}
                 </TableCell>
                 <TableCell>
-                  <ArrowUpRight className="h-4 w-4 text-muted-foreground" />
+                  <ArrowUpRight className="h-4 w-4 text-muted-foreground group-hover:scale-125 transition-all" />
                 </TableCell>
               </Link>
             </TableRow>
