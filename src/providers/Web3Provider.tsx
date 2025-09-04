@@ -9,7 +9,14 @@ import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 // Set up the wagmi config using RainbowKit's helper
 const config = getDefaultConfig({
   appName: "DeFi Dashboard",
-  projectId: process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID!,
+  projectId:
+    process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID ??
+    (() => {
+      console.error(
+        "Missing NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID environment variable"
+      );
+      throw new Error("Missing: API key");
+    })(),
   chains: [mainnet, polygon, arbitrum, optimism],
   ssr: true, // Enable server-side rendering support
 });
