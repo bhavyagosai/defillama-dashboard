@@ -53,13 +53,13 @@ export default function PoolDetailPage({ params }: PoolDetailPageProps) {
 
   if (!poolId) {
     return (
-      <main className="container mx-auto p-4 md:p-8 flex flex-col gap-8">
+      <main className="container p-4 md:p-8 flex flex-col gap-8">
         <header>
           <Link
             href="/"
             className={cn(
               buttonVariants({ variant: "ghost" }),
-              "flex items-center gap-2 text-muted-foreground"
+              "gap-2 text-muted-foreground"
             )}
           >
             <ArrowLeft className="h-4 w-4" />
@@ -79,13 +79,13 @@ export default function PoolDetailPage({ params }: PoolDetailPageProps) {
 
   if (!pool) {
     return (
-      <main className="container mx-auto p-4 md:p-8 flex flex-col gap-8">
+      <main className="container p-4 md:p-8 flex flex-col gap-8">
         <header>
           <Link
             href="/"
             className={cn(
               buttonVariants({ variant: "ghost" }),
-              "flex items-center gap-2 text-muted-foreground"
+              "gap-2 text-muted-foreground"
             )}
           >
             <ArrowLeft className="h-4 w-4" />
@@ -103,13 +103,13 @@ export default function PoolDetailPage({ params }: PoolDetailPageProps) {
 
   return (
     <ProtectedPoolDetail poolId={poolId}>
-      <main className="container mx-auto p-4 md:p-8 flex flex-col gap-8">
+      <main className="container p-4 md:p-8 flex flex-col gap-8">
         <header>
           <Link
             href="/"
             className={cn(
               buttonVariants({ variant: "ghost" }),
-              "flex items-center gap-2 text-muted-foreground"
+              "gap-2 text-muted-foreground"
             )}
           >
             <ArrowLeft className="h-4 w-4" />

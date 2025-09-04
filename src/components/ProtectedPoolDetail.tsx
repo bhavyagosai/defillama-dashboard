@@ -14,7 +14,10 @@ interface ProtectedPoolDetailProps {
   children: React.ReactNode;
 }
 
-export function ProtectedPoolDetail({ poolId, children }: ProtectedPoolDetailProps) {
+export function ProtectedPoolDetail({
+  poolId,
+  children,
+}: ProtectedPoolDetailProps) {
   const { isYieldAggregatorUnlocked } = useWallet();
   const { pools } = useData();
 
@@ -25,13 +28,13 @@ export function ProtectedPoolDetail({ poolId, children }: ProtectedPoolDetailPro
   // If it's a Yield Aggregator pool and wallet is not connected, show locked state
   if (isYieldAggregatorPool && !isYieldAggregatorUnlocked) {
     return (
-      <main className="container mx-auto p-4 md:p-8 flex flex-col gap-8">
+      <main className="container p-4 md:p-8 flex flex-col gap-8">
         <header>
           <Link
             href="/"
             className={cn(
               buttonVariants({ variant: "ghost" }),
-              "flex items-center gap-2 text-muted-foreground"
+              "gap-2 text-muted-foreground"
             )}
           >
             <ArrowLeft className="h-4 w-4" />
@@ -50,12 +53,14 @@ export function ProtectedPoolDetail({ poolId, children }: ProtectedPoolDetailPro
                   Wallet Connection Required
                 </h3>
                 <p className="text-muted-foreground max-w-md">
-                  This Yield Aggregator pool requires wallet authentication to access detailed information.
+                  This Yield Aggregator pool requires wallet authentication to
+                  access detailed information.
                 </p>
               </div>
               <div className="mt-4 p-4 bg-muted/50 rounded-lg">
                 <p className="text-sm text-muted-foreground">
-                  Yield Aggregator pools require wallet authentication for security and compliance.
+                  Yield Aggregator pools require wallet authentication for
+                  security and compliance.
                 </p>
               </div>
             </div>
@@ -68,13 +73,13 @@ export function ProtectedPoolDetail({ poolId, children }: ProtectedPoolDetailPro
   // If pool is not found, show error
   if (!pool) {
     return (
-      <main className="container mx-auto p-4 md:p-8 flex flex-col gap-8">
+      <main className="container p-4 md:p-8 flex flex-col gap-8">
         <header>
           <Link
             href="/"
             className={cn(
               buttonVariants({ variant: "ghost" }),
-              "flex items-center gap-2 text-muted-foreground"
+              "gap-2 text-muted-foreground"
             )}
           >
             <ArrowLeft className="h-4 w-4" />

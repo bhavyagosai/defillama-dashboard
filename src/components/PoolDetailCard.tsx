@@ -53,7 +53,7 @@ export function PoolDetailCard({ pool }: { pool: Pool }) {
     return {
       label: predictedClass,
       probability: predictedProbability,
-      Icon: Minus,
+      Icon: TrendingUp,
       colorClass: "text-[var(--primary)]",
     };
   }
